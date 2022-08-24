@@ -1,4 +1,43 @@
 1.	Write a PL/SQL block to read a number and check whether it is a palindrome or not.
+DECLARE 
+SUM_1 NUMBER(10) := 0;
+N NUMBER(10) := &N;
+A NUMBER(10) := 0;
+K NUMBER(10);
+BEGIN
+K := N;
+LOOP
+	A := MOD(N,10);
+	SUM_1 := SUM_1 *10+A;
+	N := TRUNC(N/10);
+	EXIT WHEN N=0;
+END LOOP;
+IF (SUM_1 = K) THEN
+DBMS_OUTPUT.PUT_LINE(K||' IS A PALINDROME NUMBER');
+ELSE
+DBMS_OUTPUT.PUT_LINE(K||' IS NOT A PALINDROME NUMBER');
+END IF;
+END;
+/
+
+3.	Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
+ declare
+ n number :=&n;
+ c number:=0;
+ begin
+ for I in 2..sqrt(n)+1 loop
+    if(mod(n,i)=0)
+    then c:=c+1;
+    exit;
+                   end if;
+ end loop;
+ if c=0
+ then dbms_output.put_line('Prime Number');
+ else
+ dbms_output.put_line('Not a Prime Number');
+ end if;
+ end;
+/
 
 5.	Write a Pl/SQL program using FOR loop to insert ten rows into a database table
 declare
