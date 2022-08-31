@@ -1,0 +1,147 @@
+II. Write SQL Select Statements for the following simple queries that retrieve data from a single table:
+
+1. Find the details of all students.
+SQL> select * from student;
+
+ID    NAME                 DEPT_NAME              TOT_CRED
+----- -------------------- -------------------- ----------
+00128 Zhang                Comp. Sci.                  102
+12345 Shankar              Comp. Sci.                   32
+19991 Brandt               History                      80
+23121 Chavez               Finance                     110
+44553 Peltier              Physics                      56
+45678 Levy                 Physics                      46
+54321 Williams             Comp. Sci.                   54
+55739 Sanchez              Music                        38
+70557 Snow                 Physics                       0
+76543 Brown                Comp. Sci.                   58
+76653 Aoi                  Elec. Eng.                   60
+
+ID    NAME                 DEPT_NAME              TOT_CRED
+----- -------------------- -------------------- ----------
+98765 Bourikas             Elec. Eng.                   98
+98988 Tanaka               Biology                     120
+
+13 rows selected.
+
+2. Find the department names of instructors.
+SQL> select dept_name from instructor group by dept_name;
+
+DEPT_NAME
+--------------------
+Elec. Eng.
+Physics
+Comp. Sci.
+Finance
+Biology
+Music
+History
+
+7 rows selected.
+
+3. Find the names of all the instructors from Biology department.
+SQL> select name from instructor where dept_name='Biology';
+
+NAME
+--------------------
+Crick
+
+4. Find the names of all instructors in the Computer Science department who have salaries greater than $70,000.
+SQL> select name from instructor where dept_name='Comp. Sci.' and salary>70000;
+
+NAME
+--------------------
+Katz
+Brandt
+
+5. Find the names of courses in Computer science department which have 3 credits.
+SQL> select title from course where dept_name='Comp. Sci.' and credits=3;
+
+TITLE
+--------------------------------------------------
+Robotics
+Image Processing
+Database System Concepts
+
+6. Find the names of the instructors, their present salaries and the resulting salaries if they were given a 10% raise.
+SQL> select name,salary,1.1*salary as hike from instructor;
+
+NAME                     SALARY       HIKE
+-------------------- ---------- ----------
+Srinivasan                65000      71500
+Wu                        90000      99000
+Mozart                    40000      44000
+Einstein                  95000     104500
+El Said                   60000      66000
+Gold                      87000      95700
+Katz                      75000      82500
+Califieri                 62000      68200
+Singh                     80000      88000
+Crick                     72000      79200
+Brandt                    92000     101200
+
+NAME                     SALARY       HIKE
+-------------------- ---------- ----------
+Kim                       80000      88000
+
+12 rows selected.
+
+7. Find the names of instructors with salary amounts between $90,000 and $100,000.
+SQL> select name from instructor where salary between 90000 and 1000000;
+
+NAME
+--------------------
+Wu
+Einstein
+Brandt
+
+8. Find all instructors whose salary is unknown.
+SQL> select * from instructor where salary=null;
+
+no rows selected
+
+9. Find the names of all departments whose building name includes the substring ‘Watson’.
+SQL> select dept_name from department where building like '%Watson';
+
+DEPT_NAME
+--------------------
+Biology
+Physics
+
+10. Find departments whose names contain the string “sci” as a substring, regardless of the case.
+SQL> select dept_name from department where lower(dept_name) like '%sci%';
+
+DEPT_NAME
+--------------------
+Comp. Sci.
+
+11. List the names of all instructors in the Physics department in alphabetic order.
+SQL> select name from instructor where dept_name='Physics' order by name;
+
+NAME
+--------------------
+Einstein
+Gold
+
+12. List the entire instructor relation in descending order of salary. If several instructors have the same salary, order them in ascending order by name.
+SQL> select * from instructor order by salary desc , name asc;
+
+ID    NAME                 DEPT_NAME                SALARY
+----- -------------------- -------------------- ----------
+22222 Einstein             Physics                   95000
+83821 Brandt               Comp. Sci.                92000
+12121 Wu                   Finance                   90000
+33456 Gold                 Physics                   87000
+98345 Kim                  Elec. Eng.                80000
+76543 Singh                Finance                   80000
+45565 Katz                 Comp. Sci.                75000
+76766 Crick                Biology                   72000
+10101 Srinivasan           Comp. Sci.                65000
+58583 Califieri            History                   62000
+32343 El Said              History                   60000
+
+ID    NAME                 DEPT_NAME                SALARY
+----- -------------------- -------------------- ----------
+15151 Mozart               Music                     40000
+
+12 rows selected.
