@@ -1,0 +1,79 @@
+1. Create the tables in the database.
+SQL> create table course1(
+  2  course_name varchar(20),
+  3  course_id number,
+  4  department varchar(20));
+
+Table created.
+
+SQL> create table student1(
+  2  name varchar(20),
+  3  ID number,
+  4  course varchar(20),
+  5  semester varchar(20));
+
+Table created.
+
+SQL> create table grade1(
+  2  id number,
+  3  semester varchar(20),
+  4  course varchar(20),
+  5  grade varchar(20));
+
+Table created.
+***************************************************************************************
+2. Alter the course table by adding a new attribute instructor.
+SQL> alter table course1 add instructor varchar(20);
+
+Table altered.
+***************************************************************************************
+3. Alter the student table by modifying the datatype of Student_ID
+SQL> alter table student1 modify ID varchar(20);
+
+Table altered.
+
+SQL> alter table student1 modify id number;
+
+Table altered.
+***************************************************************************************
+4. Alter the course table by dropping instructor attribute.
+SQL> alter table course1 drop column instructor;
+
+Table altered.
+***************************************************************************************
+5. Show the structure of the grade table.
+SQL> desc grade1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                                 NUMBER
+ SEMESTER                                           VARCHAR2(20)
+ COURSE                                             VARCHAR2(20)
+ GRADE                                              VARCHAR2(20)
+***************************************************************************************
+8. Modify the contents of tables using update statements.
+SQL>  update course1 set course_id =2 where course_name='B.Tech.';
+
+1 row updated.
+SQL> update grade1 set Grade='B+' where id=3;
+
+1 row updated.
+***************************************************************************************
+9. Delete selected records from the tables.
+SQL> delete from grade1 where grade ='A+';
+
+1 row deleted.
+***************************************************************************************
+10. Truncate a table.
+SQL> truncate table student1;
+
+Table truncated.
+***************************************************************************************
+11. Drop a table.
+SQL> drop table grade1;
+
+Table dropped.
+***************************************************************************************
+12. Commit the changes made to the database.
+SQL> commit;
+
+Commit complete.
