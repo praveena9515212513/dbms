@@ -1,0 +1,247 @@
+SQL> ed
+Wrote file afiedt.buf
+
+  1* insert into course2 values('B.Tech.',2,'ECE')
+SQL> /
+insert into course2 values('B.Tech.',2,'ECE')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.SYS_C005457) violated
+
+SQL> /
+Enter value for name: NULL
+Enter value for course_id: NULL
+Enter value for course: NULL
+Enter value for semester: NULL
+old   1: insert into student2 values(&name,&course_id,&course,&semester)
+new   1: insert into student2 values(NULL,NULL,NULL,NULL)
+insert into student2 values(NULL,NULL,NULL,NULL)
+                            *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SCOTT"."STUDENT2"."NAME")
+
+
+SQL> insert into course2 values(&course_name,&course_id,&department);
+Enter value for course_name: 'MBA'
+Enter value for course_id: null
+Enter value for department: 'IT'
+old   1: insert into course2 values(&course_name,&course_id,&department)
+new   1: insert into course2 values('MBA',null,'IT')
+insert into course2 values('MBA',null,'IT')
+                                 *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SCOTT"."COURSE2"."COURSE_ID")
+
+SQL> insert into grade2 values(&id,&semester,&course,&grade);
+Enter value for id: 19
+Enter value for semester: 4
+Enter value for course: 'B.Tech'
+Enter value for grade: 4
+old   1: insert into grade2 values(&id,&semester,&course,&grade)
+new   1: insert into grade2 values(19,4,'B.Tech',4)
+insert into grade2 values(19,4,'B.Tech',4)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.SYS_C005461) violated
+********************************************************************************************
+4. Write delete statements that violate the constraints specified in problem 1
+SQL> create table prima(
+  2  pri number primary key);
+
+Table created.
+
+SQL> crete table fore(
+SP2-0734: unknown command beginning "crete tabl..." - rest of line ignored.
+SQL> create table fore(
+  2  pri number,
+  3  foreign key(pri) references prima);
+
+Table created.
+SQL> insert into prima values(&pri);
+Enter value for pri: 19
+old   1: insert into prima values(&pri)
+new   1: insert into prima values(19)
+
+1 row created.
+
+SQL> /
+Enter value for pri: 18
+old   1: insert into prima values(&pri)
+new   1: insert into prima values(18)
+
+1 row created.
+
+SQL> /
+Enter value for pri: 17
+old   1: insert into prima values(&pri)
+new   1: insert into prima values(17)
+
+1 row created.
+
+SQL> insert into fore values(& pri);
+Enter value for pri: 19
+old   1: insert into fore values(& pri)
+new   1: insert into fore values(19)
+
+1 row created.
+
+SQL> /
+Enter value for pri: 18
+old   1: insert into fore values(& pri)
+new   1: insert into fore values(18)
+
+1 row created.
+
+SQL> /
+Enter value for pri: 17
+old   1: insert into fore values(& pri)
+new   1: insert into fore values(17)
+
+1 row created.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* delete from fore where pri=19
+SQL> /
+
+1 row deleted.
+***cannot delete from primary key table************
+SQL> delete from prima where pri =18;
+delete from prima where pri =18
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SCOTT.SYS_C005485) violated - child record
+found
+SQL> delete from prima where pri=19;
+
+1 row deleted.
+**we can delete from primary key table if the record id not found in the foreign key table
+i.e., here i deleted 19 from foreign table first then i deleted it from primary key table
+********************************************************************************************
+5. Drop the constraints specified in problem 1 using alter table statements.
+
+  1* alter table course2 modify course_id number default 19
+SQL> /
+
+Table altered.
+
+SQL> alter table course2 modify course_id not null;
+
+Table altered.
+SQL> create table primary(
+  2  c1 number constraint pk primary key);
+
+Table created.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table foreign(
+  2  c1 number ,
+  3* constraint fk foreign key(c1) references primary)
+SQL> /
+
+Table created.
+
+SQL> alter table primary drop primary key;
+alter table primary drop primary key
+*
+ERROR at line 1:
+ORA-02273: this unique/primary key is referenced by some foreign keys
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* alter table primary drop constraint pk
+SQL> /
+alter table primary drop constraint pk
+                                    *
+ERROR at line 1:
+ORA-02273: this unique/primary key is referenced by some foreign keys
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* alter table foreign drop constraint fk
+SQL> /
+
+Table altered.
+
+SQL> alter table primary drop constraint pk;
+
+Table altered.
+********************************************************************************************************************
+6. Add the constraints specified in problem 1 using alter table statements
+  create table demo(
+  def number,
+  uni number,
+  chk number,
+  pri number,
+  fre number,
+  no number)
+Table created.
+
+SQL> alter table demo modify def default 4;
+
+Table altered.
+
+SQL> alter table demo modify uni unique;
+
+Table altered.
+
+SQL> alter table demo modify constraint ck chk check(chk>19);
+alter table demo modify constraint ck chk check(chk>19)
+                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* alter table demo modify chk check(chk>19)
+SQL> /
+
+Table altered.
+
+SQL> alter table demo modify constraint pk pri primary key;
+alter table demo modify constraint pk pri primary key
+                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* alter table demo modify  pri primary key
+SQL> /
+
+Table altered.
+
+SQL> create table gg(
+  2  fre number primary key);
+
+Table created.
+
+SQL> alter table demo modify fre foreign key references gg;
+alter table demo modify fre foreign key references gg
+                                    *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* alter table demo modify  foreign key(fre) references gg
+SQL> /
+
+Table altered.
+
+SQL> alter table demo modify no not null;
+
+Table altered.
