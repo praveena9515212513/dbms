@@ -173,6 +173,8 @@ Table altered.
 SQL> alter table primary drop constraint pk;
 
 Table altered.
+***we can drop every constraint except default,check using constraint name 
+we can modify default and check***
 ********************************************************************************************************************
 6. Add the constraints specified in problem 1 using alter table statements
   create table demo(
