@@ -1,4 +1,4 @@
-1.	Write a PL/SQL block to read a number and check whether it is a palindrome or not.
+1.Write a PL/SQL block to read a number and check whether it is a palindrome or not.
 DECLARE 
 SUM_1 NUMBER(10) := 0;
 N NUMBER(10) := &N;
@@ -19,8 +19,8 @@ DBMS_OUTPUT.PUT_LINE(K||' IS NOT A PALINDROME NUMBER');
 END IF;
 END;
 /
-
-3.	Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
+*********************************************************************************************************************
+3.Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
  declare
  n number :=&n;
  c number:=0;
@@ -38,8 +38,46 @@ END;
  end if;
  end;
 /
+**************************************************************************************************************************
+5.Write a Pl/SQL program using FOR loop to insert ten rows into a database table
+SQL> create table demotable(
+  2  N number ,
+  3  N2 number,
+  4  N3 number);
 
-5.	Write a Pl/SQL program using FOR loop to insert ten rows into a database table
+Table created.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  declare
+  2  i number ;
+  3  begin
+  4  for i in 1..10 loop
+  5  insert into demotable values(i,i*i,i*i*i);
+  6  end loop;
+  7* end;
+SQL> /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from demotable;
+
+         N         N2         N3
+---------- ---------- ----------
+         1          1          1
+         2          4          8
+         3          9         27
+         4         16         64
+         5         25        125
+         6         36        216
+         7         49        343
+         8         64        512
+         9         81        729
+        10        100       1000
+
+10 rows selected.
+************************************
 declare
 d demotable%rowtype ;
 n demotable.name%type;
@@ -49,4 +87,166 @@ insert into demotable values(&n,&r);
 dbms_output.put_line('successfully inserted');
 end;
 /
+*****************************************************************************************************************************
+7.Create a table employee with eno, ename, and basic_pay attributes, insert 3 to 4 records and write a PL/SQL block to calculate the Gross salary & Net salary for an employee for the following conditions:
+HRA is 15% of basic.
+DA is 62% of basic.
+PF is 780/- if gross salary exceeds 8000, otherwise 600/-.
+Professional tax is 2% of basic.
+and then print the employee no, name, hra, da, pf, ptax, gross salary & net salary for that employee.
+
+SQL> create table employee1(
+  2  eno number,
+  3  ename varchar(20),
+  4  basic_pay number);
+  Table created.
+
+SQL> insert into employee1 values(&eno,&ename,&basic_pay);
+Enter value for eno: 19
+Enter value for ename: 'Praveena'
+Enter value for basic_pay: 5000
+old   1: insert into employee1 values(&eno,&ename,&basic_pay)
+new   1: insert into employee1 values(19,'Praveena',5000)
+
+1 row created.
+
+SQL> /
+Enter value for eno: 52
+Enter value for ename: 'Mounika'
+Enter value for basic_pay: 8000
+old   1: insert into employee1 values(&eno,&ename,&basic_pay)
+new   1: insert into employee1 values(52,'Mounika',8000)
+
+1 row created.
+
+SQL> /
+Enter value for eno: 60
+Enter value for ename: 'Bhuvana'
+Enter value for basic_pay: 10000
+old   1: insert into employee1 values(&eno,&ename,&basic_pay)
+new   1: insert into employee1 values(60,'Bhuvana',10000)
+
+1 row created.
+
+declare
+e employee1.eno%type:=&e;
+n employee1.ename%type;
+gross number;
+net number;
+sal number;
+hra number;
+da number;
+pf number;
+ptax number;
+begin
+select basic_pay,ename into sal,n from employee1 where eno=e;
+hra:=0.15*sal;
+da:=0.62*sal;
+if sal>8000
+then pf:=780;
+else
+ pf:=600;
+end if;
+ptax:=0.02*sal;
+gross:=hra+da+sal;
+net:=gross-pf-ptax;
+dbms_output.put_line('emp no='||e||' '||'emp name='||n||' '||'emp hra='||hra||' '||'emp da='||da||' '||'emp pf='||pf||' '||'emp ptax='||ptax||' '||'emp gross='||gross||' '||'emp net='||net);
+end;
+/
+output:
+Enter value for e: 60
+old   2: e employee1.eno%type:=&e;
+new   2: e employee1.eno%type:=60;
+emp no=60 emp name=Bhuvana emp hra=1500 emp da=6200 emp pf=780 emp ptax=200 emp
+gross=17700 emp net=16720
+
+PL/SQL procedure successfully completed.
+****************************************************************************************
+10.Consider the following relation schemas
+
+Bank_Main
+Acc_no	Name	Address	Acc-type	Curr_balance
+Bank_Trans
+Acc_no	Tr_type	Tr_date	Tr_amt	Upd_flag
+
+Where acc_type is S – savings C- current 
+Tr_type is D – deposit W – withdrawal 
+Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
+
+10th question tables
+BANK_MAIN
+ACC_NO	Name	address	ACC_TYPE	Current_balance
+1001	Raju	Guntur	S	15000
+1002	Bindu	Vizag	S	10000
+1003	Abhilash	Hyderabad	C	10000
+1004	babu	vijayawada	C	9000
+
+BANK_TRANS
+ACC_NO	Tr_type	Tr_date	Tr_amt	Upd_flag
+1001	D	20 sep 2007	5000	N
+1002	W	20 sep 2007	2000	Y
+1003	D	20 sep 2007	4000	Y
+1001	W	20 sep 2007	10000	N
+
+CS 262 – DBMS Lab (A.Y. 2021 – 2022)
+Lab Cycle – 3
+
+1.	Write a PL/SQL block to read a number and check whether it is a palindrome or not.
+2.	Write a PL/SQL Program to print the first n fibonacci numbers.
+3.	Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
+4.	Write a PL/SQL block which will accept two numbers and find out their LCM and HCF. The output should be stored in a table called DEMO_TAB.
+DEMO_TAB
+Number1	Number2	LCM	HCF
+
+5.	Write a Pl/SQL program using FOR loop to insert ten rows into a database table.
+6.	Consider the following relation schemas
+
+Inventory
+Product_ID	Product_name	Quantity
+
+   Purchase_Record
+Product_ID	Status	Date
+
+Write a PL/SQL block to read the quantity of a product from inventory and if it is > 0 reduce the quantity by 1 and record the status of purchase of that product as ‘PURCHASED’. Otherwise record the status of purchase of that product as ‘OUT OF STOCK’. While recording the status of a purchase, record the date of transaction.
+
+7.	Create a table employee with eno, ename, and basic_pay attributes, insert 3 to 4 records and write a PL/SQL block to calculate the Gross salary & Net salary for an employee for the following conditions:
+	HRA is 15% of basic.
+	DA is 62% of basic.
+	PF is 780/- if gross salary exceeds 8000, otherwise 600/-.
+	Professional tax is 2% of basic.
+and then print the employee no, name, hra, da, pf, ptax, gross salary & net salary for that employee.
+
+8.	Consider the following relation schemas
+Emp
+empno	ename	sal	deptno
+ Del_History
+deptno	Rows_deleted	
+date
+Write a PL/SQL block to delete records of all employees who belong to a particular department and then record the dno, no of rows deleted and date on which deletion occurred in the Del_History table using implicit cursors. 
+ 
+
+9.	Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
+
+10.	Consider the following relation schemas
+
+Bank_Main
+Acc_no	Name	Address	Acc-type	Curr_balance
+Bank_Trans
+Acc_no	Tr_type	Tr_date	Tr_amt	Upd_flag
+
+Where acc_type is S – savings C- current 
+Tr_type is D – deposit W – withdrawal 
+Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
+
+
+11.	Write a PL/SQL block to handle the following built-in exceptions
+no_data_found
+too_many_rows
+zero_divide  
+
+12.	Write a PL/SQL block to check whether the quantity of any product in Inventory table is < 0. If so, using an exception display relevant message and update quantity to 0.
+
+Inventory
+Product_ID	Product_name	Quantity
+
 
