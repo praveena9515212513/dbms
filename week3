@@ -149,3 +149,259 @@ ID    NAME                 DEPT_NAME                SALARY
 ********************************************************************************************
 III. Write SQL queries for retrieving data from multiple tables using Joins:
 1. Find all possible combinations of instructors and the courses they teach
+SQL>select *
+from instructor,course;
+156 rows selected.
+********************************************************************************************
+2. Retrieve the names of all instructors, along with their department names and department building name.
+SQL> select name,instructor.dept_name,building
+  2  from instructor,department
+  3  where instructor.dept_name=department.dept_name;
+
+NAME                 DEPT_NAME            BUILDING
+-------------------- -------------------- ---------------
+Srinivasan           Comp. Sci.           Taylor
+Wu                   Finance              Painter
+Mozart               Music                Packard
+Einstein             Physics              Watson
+El Said              History              Painter
+Gold                 Physics              Watson
+Katz                 Comp. Sci.           Taylor
+Califieri            History              Painter
+Singh                Finance              Painter
+Crick                Biology              Watson
+Brandt               Comp. Sci.           Taylor
+
+NAME                 DEPT_NAME            BUILDING
+-------------------- -------------------- ---------------
+Kim                  Elec. Eng.           Taylor
+
+12 rows selected.
+********************************************************************************************
+3. Find the names of instructors who have taught at least one course.
+SQL> select distinct name
+  2  from instructor,teaches
+  3  where instructor.id=teaches.id;
+
+NAME
+--------------------
+Einstein
+Crick
+El Said
+Srinivasan
+Brandt
+Wu
+Kim
+Mozart
+Katz
+
+9 rows selected.
+********************************************************************************************
+4. For the student with ID 12345 (or any other value), show all course_id and title of all courses registered for by the student.
+SQL> select takes.course_id,title
+  2  from takes,course
+  3  where takes.id=12345 and takes.course_id=course.course_id;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+CS-190   Game Design
+CS-315   Robotics
+CS-347   Database System Concepts
+********************************************************************************************
+5. Find instructor names and course identifiers for instructors in the Computer Science department.
+SQL> select distinct name,course_id
+  2  from instructor,teaches
+  3  where instructor.id=teaches.id and dept_name='Comp. Sci.';
+
+NAME                 COURSE_I
+-------------------- --------
+Katz                 CS-319
+Srinivasan           CS-101
+Katz                 CS-101
+Srinivasan           CS-347
+Brandt               CS-190
+Brandt               CS-319
+Srinivasan           CS-315
+
+7 rows selected.
+********************************************************************************************
+6. For all instructors in the university who have taught some course, find their names and the course ID of all courses they taught.
+SQL> select distinct name,course_id
+  2  from instructor,teaches
+  3  where instructor.id=teaches.id;
+
+NAME                 COURSE_I
+-------------------- --------
+Katz                 CS-319
+Crick                BIO-101
+Srinivasan           CS-101
+Katz                 CS-101
+Srinivasan           CS-347
+Einstein             PHY-101
+Brandt               CS-190
+Kim                  EE-181
+Wu                   FIN-201
+Mozart               MU-199
+Brandt               CS-319
+
+NAME                 COURSE_I
+-------------------- --------
+El Said              HIS-351
+Srinivasan           CS-315
+Crick                BIO-301
+
+14 rows selected.
+********************************************************************************************
+7. Find the names of all instructors whose salary is greater than at least one 
+instructor in the Biology department. Or Find the names of all instructors who 
+earn more than the lowest paid instructor in the Biology department.
+SQL> select distinct t.name
+  2  from instructor t ,instructor s
+  3  where t.salary>s.salary and s.dept_name='Biology';
+
+NAME
+--------------------
+Einstein
+Gold
+Brandt
+Wu
+Kim
+Singh
+Katz
+
+7 rows selected.
+********************************************************************************************
+8. Find full details of instructors who teach at least one course.
+SQL> select distinct(t.id),name,dept_name,salary
+  2  from instructor t,teaches s
+  3  where t.id=s.id;
+
+ID    NAME                 DEPT_NAME                SALARY
+----- -------------------- -------------------- ----------
+10101 Srinivasan           Comp. Sci.                65000
+98345 Kim                  Elec. Eng.                80000
+15151 Mozart               Music                     40000
+45565 Katz                 Comp. Sci.                75000
+76766 Crick                Biology                   72000
+32343 El Said              History                   60000
+22222 Einstein             Physics                   95000
+83821 Brandt               Comp. Sci.                92000
+12121 Wu                   Finance                   90000
+
+9 rows selected.
+********************************************************************************************
+9. Find the instructor names and the courses they taught for all instructors in the 
+Biology department who have taught some course.
+SQL> select distinct name,title
+  2  from instructor ,teaches,course
+  3  where instructor.id=teaches.id and teaches.course_id=course.course_id
+  4  and instructor.dept_name='Biology';
+
+NAME                 TITLE
+-------------------- --------------------------------------------------
+Crick                Genetics
+Crick                Intro. to Biology
+ or
+SQL> select distinct name,course_id
+  2  from instructor,teaches
+  3  where instructor.id=teaches.id and dept_name='Biology';
+
+NAME                 COURSE_I
+-------------------- --------
+Crick                BIO-101
+Crick                BIO-301
+
+SQL> select distinct name,course_id
+  2  from instructor natural join teaches
+  3  where dept_name='Biology';
+
+NAME                 COURSE_I
+-------------------- --------
+Crick                BIO-101
+Crick                BIO-301
+********************************************************************************************
+10. Find the set of all courses taught either in Fall 2009 or in Spring 2010, or both.
+SQL> select distinct course_id 
+  2  from teaches
+  3  where semester='Fall' and year=2009 
+  4  or semester='Spring' and year=2010;
+
+COURSE_I
+--------
+HIS-351
+CS-101
+CS-347
+FIN-201
+CS-319
+PHY-101
+CS-315
+MU-199
+
+8 rows selected.
+or
+SQL> select distinct course_id
+  2  from teaches
+  3  where year=2009 and semester='Fall'
+  4  union
+  5  select distinct course_id
+  6  from teaches
+  7  where year=2010 and semester='Spring';
+
+COURSE_I
+--------
+CS-101
+CS-315
+CS-319
+CS-347
+FIN-201
+HIS-351
+MU-199
+PHY-101
+
+8 rows selected.
+********************************************************************************************
+11. Find all courses taught in the Fall 2009 semester but not in the Spring 2010 semester. 
+SQL> select course_id
+  2  from teaches
+  3  where semester='Fall' and year=2009
+  4  minus
+  5  select course_id
+  6  from teaches
+  7  where semester='Spring' and year=2010;
+
+COURSE_I
+--------
+CS-347
+PHY-101
+********************************************************************************************
+12. Find the names of all students who have taken any Comp. Sci. course ever.(there should be no duplicate names)
+SQL> select distinct name
+  2  from student,takes
+  3  where student.id=takes.id and course_id like '%CS%';
+
+NAME
+--------------------
+Zhang
+Brown
+Bourikas
+Shankar
+Levy
+Williams
+
+6 rows selected.
+********************************************************************************************
+13. Display the IDs of all instructors who have never taught a course. (Don’t write 
+nested query.
+SQL> select id
+  2  from instructor
+  3  minus
+  4  select instructor.id
+  5  from instructor,teaches
+  6  where instructor.id=teaches.id;
+
+ID
+-----
+33456
+58583
+76543
