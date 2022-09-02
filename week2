@@ -1,3 +1,70 @@
+***ON DELETE CASCADE***
+SQL> create table mary(
+  2  column1 number primary key);
+
+Table created.
+
+SQL> create table eign(
+  2  column1 number,
+  3  foreign key(column1) references mary on delete cascade);
+
+Table created.
+
+SQL> select * from mary;
+
+   COLUMN1
+----------
+         1
+         2
+         3
+
+SQL> select * from eign;
+
+   COLUMN1
+----------
+         1
+         2
+         3
+**first delete referencing table data and then delete referenced table data ****it gives no error****
+SQL> delete from eign where column1=1;
+
+1 row deleted.
+
+SQL> delete from mary where column1=1;
+
+1 row deleted.
+
+SQL> select * from mary;
+
+   COLUMN1
+----------
+         2
+         3
+
+SQL> select * from eign;
+
+   COLUMN1
+----------
+         2
+         3
+
+SQL> delete from mary where column1=2;
+
+1 row deleted.
+
+SQL> select * from mary;
+
+   COLUMN1
+----------
+         3
+
+SQL> select * from eign;
+
+   COLUMN1
+----------
+         3
+if we remove on delete cascade and try to delete element in primary key table then it gives error
+********************************************************************************************
 SQL> ed
 Wrote file afiedt.buf
 
