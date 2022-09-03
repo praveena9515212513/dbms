@@ -98,7 +98,7 @@ SQL> select course_id,avg(tot_cred)
   2  from student natural join takes
   3  where year=2009
   4  group by course_id
-  5  having count(course_id)>=2;
+  5  having count(id)>=2;
 
 COURSE_I AVG(TOT_CRED)
 -------- -------------
