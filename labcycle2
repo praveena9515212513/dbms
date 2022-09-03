@@ -177,17 +177,84 @@ TO_CHAR(
 12:08.52
 **************************************************************************************************
 12. Find all employees who earn a salary greater than the average salary of their departments.
+SQL> select ename,deptno,sal
+  2  from emp e1
+  3  where sal>(select avg(sal)
+  4  from emp e2
+  5  where e1.deptno=e2.deptno
+  6  group by deptno);
+
+ENAME          DEPTNO        SAL
+---------- ---------- ----------
+KING               10       5000
+BLAKE              30       2850
+JONES              20       2975
+ALLEN              30       1600
+FORD               20       3000
+SCOTT              20       3200
+
+6 rows selected.
 **************************************************************************************************
 13. Write a query to find the name of the manager and number of sub-ordinates.
+SQL> select e1.ename,count(e1.empno)
+  2  from emp e1,emp e2
+  3  where e2.mgr=e1.empno
+  4  group by e1.ename;
+
+ENAME      COUNT(E1.EMPNO)
+---------- ---------------
+BLAKE                    5
+CLARK                    1
+FORD                     1
+JONES                    2
+KING                     3
+SCOTT                    1
+
+6 rows selected.
 **************************************************************************************************
 14. Write a query to find out the manager having Maximum number of sub-ordinates.
 **************************************************************************************************
 15. Write a query to find out the top three earners.
 **************************************************************************************************
 16. Write a query to find out the employees who have joined before their managers.
+
+  1  select distinct e1.ename
+  2  from emp e1,emp e2
+  3  where e1.mgr=e2.empno
+  4* and e1.hiredate<e2.hiredate
+SQL> /
+
+ENAME
+----------
+ALLEN
+BLAKE
+CLARK
+JONES
+SMITH
+WARD
+
+6 rows selected.
 **************************************************************************************************
 17. Write a query to find out the year, where most people join in the company displays the year
 and No. of Employees.
+SQL> select * from
+  2  (select to_char(hiredate,'yyyy'), count(empno) c
+  3  from emp
+  4  group by to_char(hiredate,'yyyy') order by c desc)
+  5  where rownum<=1;
+
+TO_C          C
+---- ----------
+1981         10
+
 **************************************************************************************************
 18. Write a query which will return the DAY of the week.(ie. MONDAY), for any date entered in
 the format: DD.MM.YY
+SQL> select to_char(date '&a','day') from dual;
+Enter value for a: 2022-09-03
+old   1: select to_char(date '&a','day') from dual
+new   1: select to_char(date '2022-09-03','day') from dual
+
+TO_CHAR(D
+---------
+saturday
