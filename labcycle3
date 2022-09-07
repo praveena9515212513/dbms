@@ -336,3 +336,38 @@ Inventory
 Product_ID	Product_name	Quantity
 
 
+PRODUCT_ID PRODUCT_NAME            QUALITY
+---------- -------------------- ----------
+         1 sorter                        9
+         2 screw                         0
+         3 bolt                        -10
+
+SQL> declare
+  2  id number:=&id;
+  3  q number;
+  4  negatity_quantity EXCEPTION;
+  5  begin
+  6  select quality into q from inventory where product_id=id;
+  7  if(q<0) then
+  8  RAISE negatity_quantity ;
+  9  else
+ 10  dbms_output.put_line('quantity is '||q);
+ 11  end if;
+ 12  EXCEPTION
+ 13  when negatity_quantity then
+ 14  dbms_output.put_line('Invalid quantity');
+ 15  update inventory set quality=0 where product_id=id;
+ 16 END;
+Enter value for id: 3
+old   2: id number:=&id;
+new   2: id number:=3;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from inventory;
+
+PRODUCT_ID PRODUCT_NAME            QUALITY
+---------- -------------------- ----------
+         1 sorter                        9
+         2 screw                         0
+         3 bolt                          0
