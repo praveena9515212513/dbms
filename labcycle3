@@ -234,6 +234,47 @@ new   2: no number:=1;
 PL/SQL procedure successfully completed.
 *************************************************************************************************
 9.Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
+
+ SQL>declare
+  2  row emp%rowtype;
+  3  cursor cursor1 is
+  4  select * from (select * from emp order by sal desc)
+  5  where rownum<=5;
+  6  cursor cursor2 is
+  7  select * from (select * from emp order by sal  )
+  8  where rownum<=5;
+  9  begin
+ 10  dbms_output.put_line('First five highest paid employees');
+ 11  open cursor1;
+ 12  loop
+ 13  fetch cursor1 into row;
+ 14  exit when cursor1%notfound;
+ 15  dbms_output.put_line(row.ename||' ' ||row.sal);
+ 16  end loop;
+ 17  dbms_output.put_line('First five lowest paid employees');
+ 18  open cursor2;
+ 19  loop
+ 20  fetch cursor2 into row;
+ 21  exit when cursor2%notfound;
+ 22  dbms_output.put_line(row.ename||' ' ||row.sal);
+ 23  end loop;
+ 24* end;
+SQL> /
+First five highest paid employees
+KING 5000
+SCOTT 3200
+FORD 3000
+JONES 2975
+BLAKE 2850
+First five lowest paid employees
+SMITH 800
+JAMES 950
+ADAMS 1100
+MARTIN 1250
+WARD 1250
+
+PL/SQL procedure successfully completed.
+
 *************************************************************************************************
 10.Consider the following relation schemas
 
