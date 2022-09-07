@@ -20,6 +20,36 @@ END IF;
 END;
 /
 *********************************************************************************************************************
+2.Write a PL/SQL Program to print the first n fibonacci numbers.
+SQL> declare
+  2  n number:= &n;
+  3  a number:=0;
+  4  b number:=1;
+  5  c number;
+  6  begin
+  7  dbms_output.put_line(a);
+  8  dbms_output.put_line(b);
+  9  for i in 2..n-1 loop
+ 10   c:=a+b;
+ 11   a:=b;
+ 12   b:=c;
+ 13   dbms_output.put_line(c);
+ 14  end loop;
+ 15  dbms_output.put_line('are the first '||n||' fibonnaci numbers');
+ 16  end;
+ 17  /
+Enter value for n: 5
+old   2: n number:= &n;
+new   2: n number:= 5;
+0
+1
+1
+2
+3
+are the first 5 fibonnaci numbers
+
+PL/SQL procedure successfully completed.
+*********************************************************************************************************************
 3.Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
  declare
  n number :=&n;
@@ -187,35 +217,7 @@ ACC_NO	Tr_type	Tr_date	Tr_amt	Upd_flag
 1002	W	20 sep 2007	2000	Y
 1003	D	20 sep 2007	4000	Y
 1001	W	20 sep 2007	10000	N
-
-CS 262 – DBMS Lab (A.Y. 2021 – 2022)
-Lab Cycle – 3
-
-1.	Write a PL/SQL block to read a number and check whether it is a palindrome or not.
-2.	Write a PL/SQL Program to print the first n fibonacci numbers.
-3.	Write a PL/SQL block which will accept a number and checks if it is a prime number or not. 
-4.	Write a PL/SQL block which will accept two numbers and find out their LCM and HCF. The output should be stored in a table called DEMO_TAB.
-DEMO_TAB
-Number1	Number2	LCM	HCF
-
-5.	Write a Pl/SQL program using FOR loop to insert ten rows into a database table.
-6.	Consider the following relation schemas
-
-Inventory
-Product_ID	Product_name	Quantity
-
-   Purchase_Record
-Product_ID	Status	Date
-
-Write a PL/SQL block to read the quantity of a product from inventory and if it is > 0 reduce the quantity by 1 and record the status of purchase of that product as ‘PURCHASED’. Otherwise record the status of purchase of that product as ‘OUT OF STOCK’. While recording the status of a purchase, record the date of transaction.
-
-7.	Create a table employee with eno, ename, and basic_pay attributes, insert 3 to 4 records and write a PL/SQL block to calculate the Gross salary & Net salary for an employee for the following conditions:
-	HRA is 15% of basic.
-	DA is 62% of basic.
-	PF is 780/- if gross salary exceeds 8000, otherwise 600/-.
-	Professional tax is 2% of basic.
-and then print the employee no, name, hra, da, pf, ptax, gross salary & net salary for that employee.
-
+******************************************************************************************
 8.	Consider the following relation schemas
 Emp
 empno	ename	sal	deptno
@@ -223,8 +225,41 @@ empno	ename	sal	deptno
 deptno	Rows_deleted	
 date
 Write a PL/SQL block to delete records of all employees who belong to a particular department and then record the dno, no of rows deleted and date on which deletion occurred in the Del_History table using implicit cursors. 
- 
 
+SQL> create table emp8(
+  2  empid number,
+  3  name varchar(20),
+  4  salary number,
+  5  dno number);
+
+Table created.
+
+  1  create table del_history8(
+  2  dno number,
+  3  rows_deleted number,
+  4* date1 date)
+SQL> /
+
+Table created.
+
+SQL> declare
+  2  no number:=&no;
+  3  no_rows number;
+  4  begin
+  5  delete from emp8 where dno=no;
+  6  if SQL%FOUND then
+  7  no_rows :=SQL%ROWCOUNT;
+  8  insert into del_history8 values(no,no_rows,to_char(sysdate));
+  9  end if;
+ 10  end;
+ 11  /
+Enter value for no: 1
+old   2: no number:=&no;
+new   2: no number:=1;
+
+PL/SQL procedure successfully completed.
+
+*************************************************************************************************
 9.	Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
 
 10.	Consider the following relation schemas
