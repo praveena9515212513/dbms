@@ -192,33 +192,7 @@ gross=17700 emp net=16720
 
 PL/SQL procedure successfully completed.
 ****************************************************************************************
-10.Consider the following relation schemas
-
-Bank_Main
-Acc_no	Name	Address	Acc-type	Curr_balance
-Bank_Trans
-Acc_no	Tr_type	Tr_date	Tr_amt	Upd_flag
-
-Where acc_type is S – savings C- current 
-Tr_type is D – deposit W – withdrawal 
-Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
-
-10th question tables
-BANK_MAIN
-ACC_NO	Name	address	ACC_TYPE	Current_balance
-1001	Raju	Guntur	S	15000
-1002	Bindu	Vizag	S	10000
-1003	Abhilash	Hyderabad	C	10000
-1004	babu	vijayawada	C	9000
-
-BANK_TRANS
-ACC_NO	Tr_type	Tr_date	Tr_amt	Upd_flag
-1001	D	20 sep 2007	5000	N
-1002	W	20 sep 2007	2000	Y
-1003	D	20 sep 2007	4000	Y
-1001	W	20 sep 2007	10000	N
-******************************************************************************************
-8.	Consider the following relation schemas
+8.Consider the following relation schemas
 Emp
 empno	ename	sal	deptno
  Del_History
@@ -258,11 +232,10 @@ old   2: no number:=&no;
 new   2: no number:=1;
 
 PL/SQL procedure successfully completed.
-
 *************************************************************************************************
-9.	Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
-
-10.	Consider the following relation schemas
+9.Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
+*************************************************************************************************
+10.Consider the following relation schemas
 
 Bank_Main
 Acc_no	Name	Address	Acc-type	Curr_balance
@@ -273,11 +246,89 @@ Where acc_type is S – savings C- current
 Tr_type is D – deposit W – withdrawal 
 Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
 
+10th question tables
+BANK_MAIN
+ACC_NO	Name	address	ACC_TYPE	Current_balance
+1001	Raju	Guntur	S	15000
+1002	Bindu	Vizag	S	10000
+1003	Abhilash	Hyderabad	C	10000
+1004	babu	vijayawada	C	9000
 
-11.	Write a PL/SQL block to handle the following built-in exceptions
-no_data_found
-too_many_rows
-zero_divide  
+BANK_TRANS
+ACC_NO	Tr_type	Tr_date	Tr_amt	Upd_flag
+1001	D	20 sep 2007	5000	N
+1002	W	20 sep 2007	2000	Y
+1003	D	20 sep 2007	4000	Y
+1001	W	20 sep 2007	10000	N
+
+ans:
+SQL>  create table bank_trans(
+  2   acc_no number,
+  3   tr_type varchar(5),
+  4   tr_date date,
+  5   tr_amt number,
+  6   upd_flag varchar(5));
+
+Table created.
+
+SQL> create table bank_main(
+  2  acc_no number,
+  3  name varchar(20),
+  4  address varchar(20),
+  5  acc_type varchar(5),
+  6  curr_balance number);
+
+Table created.
+SQL>  declare
+  2   no number;
+  3   cur_bal number;
+  4   amount number;
+  5  status varchar(5);
+  6   CURSOR cur1 is
+  7   select bank_trans.acc_no,tr_amt,cur_bal ,tr_type
+  8  from bank_trans,bank_main
+  9  where upd_flag='N' and
+ 10  bank_main.acc_no=bank_trans.acc_no;
+ 11   begin
+ 12   open cur1;
+ 13   LOOP
+ 14   fetch cur1 into no,amount,cur_bal,status;
+ 15   exit when cur1%NOTFOUND;
+ 16  if status='D' then
+ 17   update bank_main set curr_balance=curr_balance+amount
+ 18   where acc_no=no;
+ 19   update bank_trans set upd_flag ='Y' where acc_no=no;
+ 20  else
+ 21  update bank_main set curr_balance=curr_balance-amount
+ 22   where acc_no=no;
+ 23   update bank_trans set upd_flag ='Y' where acc_no=no;
+ 24   end if;
+ 25  end loop;
+ 26  end;
+SQL> /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from bank_main;
+
+    ACC_NO NAME                 ADDRESS              ACC_T CURR_BALANCE
+---------- -------------------- -------------------- ----- ------------
+      1001 Raju                 Guntur               S            10000
+      1002 Bindhu               Vizag                S            10000
+      1003 Abhilash             Hyderabad            C            10000
+      1004 babu                 vijayawada           C             9000
+
+SQL> select * from bank_trans;
+
+    ACC_NO TR_TY TR_DATE       TR_AMT UPD_F
+---------- ----- --------- ---------- -----
+      1001 D     20-SEP-07       5000 Y
+      1002 W     20-SEP-07       2000 Y
+      1003 D     20-SEP-07       4000 Y
+      1001 W     20-SEP-07      10000 Y
+
+******************************************************************************************
+
 
 12.	Write a PL/SQL block to check whether the quantity of any product in Inventory table is < 0. If so, using an exception display relevant message and update quantity to 0.
 
