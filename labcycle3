@@ -1,4 +1,5 @@
 1.Write a PL/SQL block to read a number and check whether it is a palindrome or not.
+
 DECLARE 
 SUM_1 NUMBER(10) := 0;
 N NUMBER(10) := &N;
@@ -19,6 +20,11 @@ DBMS_OUTPUT.PUT_LINE(K||' IS NOT A PALINDROME NUMBER');
 END IF;
 END;
 /
+Enter value for n: 1234321
+old   3: N NUMBER(10) := &N;
+new   3: N NUMBER(10) := 1234321;
+1234321 IS A PALINDROME NUMBER
+PL/SQL procedure successfully completed.
 *********************************************************************************************************************
 2.Write a PL/SQL Program to print the first n fibonacci numbers.
 SQL> declare
@@ -68,6 +74,13 @@ PL/SQL procedure successfully completed.
  end if;
  end;
 /
+Enter value for n: 55
+old   2: n number :=&n;
+new   2: n number :=55;
+Not a Prime Number
+
+PL/SQL procedure successfully completed.
+
 **************************************************************************************************************************
 5.Write a Pl/SQL program using FOR loop to insert ten rows into a database table
 SQL> create table demotable(
@@ -274,7 +287,6 @@ MARTIN 1250
 WARD 1250
 
 PL/SQL procedure successfully completed.
-
 *************************************************************************************************
 10.Consider the following relation schemas
 
@@ -369,8 +381,6 @@ SQL> select * from bank_trans;
       1001 W     20-SEP-07      10000 Y
 
 ******************************************************************************************
-
-
 12.	Write a PL/SQL block to check whether the quantity of any product in Inventory table is < 0. If so, using an exception display relevant message and update quantity to 0.
 
 Inventory
