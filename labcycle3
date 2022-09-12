@@ -80,6 +80,63 @@ new   2: n number :=55;
 Not a Prime Number
 
 PL/SQL procedure successfully completed.
+**************************************************************************************************************************
+4.Write a PL/SQL block which will accept two numbers and find out their LCM and HCF. The output should be stored in a table called DEMO_TAB.
+DEMO_TAB
+Number1	Number2	LCM	HCF
+  1  declare
+  2  a number  := &a;
+  3  b number :=&b;
+  4  p number;
+  5  q number;
+  6  g number;
+  7  l number;
+  8  begin
+  9  p := a;
+ 10  q := b;
+ 11  while(a<>b)loop
+ 12  if(a>b)then
+ 13  a:=a-b;
+ 14  else
+ 15  b:=b-a;
+ 16  end if;
+ 17  end loop;
+ 18  g :=a;
+ 19  l :=(p*q)/g;
+ 20  insert into demo_tab values(p,q,g,l);
+ 21* end;
+SQL> create table demo_tab(
+  2  number1 number,
+  3  number2 number,
+  4  lcm number,
+  5  hcf number);
+
+Table created.
+Enter value for a: 6
+old   2: a number  := &a;
+new   2: a number  := 6;
+Enter value for b: 36
+old   3: b number :=&b;
+new   3: b number :=36;
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for a: 5
+old   2: a number  := &a;
+new   2: a number  := 5;
+Enter value for b: 41
+old   3: b number :=&b;
+new   3: b number :=41;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from demo_tab;
+
+   NUMBER1    NUMBER2        LCM        HCF
+---------- ---------- ---------- ----------
+         6         36          6         36
+         5         41          1        205
 
 **************************************************************************************************************************
 5.Write a Pl/SQL program using FOR loop to insert ten rows into a database table
