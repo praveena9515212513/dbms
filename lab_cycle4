@@ -148,3 +148,101 @@ The Total earnings of ADAMS is 13200
 The Total earnings of MILLER is 15600
 
 PL/SQL procedure successfully completed.
+********************************************************************************************************************************************************************
+6.Consider the following tables
+PERSINFO
+EMPNO	NAME	AGE
+AUDITPERSINFO
+EMPNO	NAME	AGE	OPERATION	ODATE
+PERSINFO is the table for which the auditing must be performed and AUDITPERSINFO is the table which keeps track of the records deleted or modified. 
+Create a database trigger audit_trial. This trigger is forced when an UPDATE or a DELETE is performed on the table PERSINFO. It first checks for the operation 
+being performed on the table. Then depending on the operation, a variable (that corresponds to operation) is assigned the value ‘UPDATE’ or ‘DELETE’ and 
+then inserts the updated/deleted record into AUDITPERSINFO.
+
+SQL> create table persinfo(
+  2  empno number,
+  3  name varchar(20),
+  4  age number);
+
+Table created.
+
+SQL> create table auditpersinfo(
+  2  empno number,
+  3  name varchar(20),
+  4  age number,
+  5  operation varchar(20),
+  6  odate date);
+
+Table created.
+
+create or replace trigger six
+after delete or update on persinfo
+for each row
+declare 
+op varchar(10);
+na varchar(20);
+no number;
+a number;
+begin
+na:=:old.name;
+no:=:old.empno;
+a:=:old.age;
+if updating then
+insert into auditpersinfo values(no,na,a,'UPDATE',sysdate);
+end if;
+if deleting then
+insert into auditpersinfo values(no,na,a,'DELETE',sysdate);
+end if;
+end;
+/
+output:
+SQL> insert into persinfo values(&empno,&name,&age);
+Enter value for empno: 1
+Enter value for name: 'narsi'
+Enter value for age: 58
+old   1: insert into persinfo values(&empno,&name,&age)
+new   1: insert into persinfo values(1,'narsi',58)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 2
+Enter value for name: 'nag'
+Enter value for age: 43
+old   1: insert into persinfo values(&empno,&name,&age)
+new   1: insert into persinfo values(2,'nag',43)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 3
+Enter value for name: 'sasi'
+Enter value for age: 21
+old   1: insert into persinfo values(&empno,&name,&age)
+new   1: insert into persinfo values(3,'sasi',21)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 4
+Enter value for name: 'pravee'
+Enter value for age: 19
+old   1: insert into persinfo values(&empno,&name,&age)
+new   1: insert into persinfo values(4,'pravee',19)
+
+1 row created.
+
+SQL> update persinfo set name='praveena' where name='pravee';
+
+1 row updated.
+SQL> delete from persinfo where name='praveena';
+
+1 row deleted.
+
+SQL> select * from auditpersinfo;
+
+     EMPNO NAME                        AGE OPERATION            ODATE
+---------- -------------------- ---------- -------------------- ---------
+         4 pravee                       19 UPDATE               14-SEP-22
+         4 praveena                     19 DELETE               14-SEP-22
+
