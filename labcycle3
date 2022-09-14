@@ -302,6 +302,13 @@ old   2: no number:=&no;
 new   2: no number:=1;
 
 PL/SQL procedure successfully completed.
+
+SQL> select * from del_history7;
+
+       DNO ROWS_DELETED DATE1
+---------- ------------ ---------
+         1            1 14-SEP-22
+
 *************************************************************************************************
 9.Given the table EMPLOYEE (EmpNo, Name, Salary, Designation, DeptID) write a cursor to select the five highest and lowest paid employees from the table.
 
@@ -354,7 +361,8 @@ Acc_no	Tr_type	Tr_date	Tr_amt	Upd_flag
 
 Where acc_type is S – savings C- current 
 Tr_type is D – deposit W – withdrawal 
-Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
+Write a PL/SQL block to update master table’s (i.e., Bank_Main) curr_balance field with transaction details from transaction file (i.e., Bank_Trans) and 
+also change the status of the Upd_flag field of transaction table to ‘Y’ once the updation is complete.
 
 10th question tables
 BANK_MAIN
@@ -438,7 +446,8 @@ SQL> select * from bank_trans;
       1001 W     20-SEP-07      10000 Y
 
 ******************************************************************************************
-12.	Write a PL/SQL block to check whether the quantity of any product in Inventory table is < 0. If so, using an exception display relevant message and update quantity to 0.
+12.Write a PL/SQL block to check whether the quantity of any product in Inventory table is < 0. If so, using an exception display relevant message and 
+update quantity to 0.
 
 Inventory
 Product_ID	Product_name	Quantity
