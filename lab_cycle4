@@ -1,0 +1,150 @@
+1.Write a stored procedure, raise_salary which accepts an employee number, increment and modifies salary of that employee in employee table. 
+Modified salary = salary increase amount+ current salary. If employee number is not found or if the current salary is null, it should raise an exception. 
+Otherwise, updates the salary
+
+create or replace procedure inc2(n number) as
+no number:=n;
+ex exception;
+n1 number;
+incr_sal number;
+begin
+select sal into incr_sal from emp where empno = no;
+if(incr_sal<=3000) then
+incr_sal :=0.3*incr_sal;
+elsif (incr_sal>3000 and incr_sal<=6000) then
+incr_sal :=0.2*incr_sal;
+else
+incr_sal :=0.1*incr_sal;
+end if;
+select sal into n1 from emp where empno=no;
+if n1 is null then raise ex;
+else
+update emp set sal=sal+incr_sal where empno=no;
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('No Data Found');
+when ex then
+dbms_output.put_line('The employee number does not exist');
+end;
+/
+
+output:
+SQL> exec inc2(123);
+No Data Found
+
+SQL> exec inc2(7876);
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp where empno=7876;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7876 ADAMS      CLERK           7788 12-JAN-83       1430
+        20
+********************************************************************************************************************************************************************
+2.Write a PL/SQL function that accepts department number and returns the total salary of the department.
+create or replace function tsal (n number)return number as 
+no number := n;
+total_sal number;
+begin
+select sum(sal) into total_sal from emp where deptno = no;
+return total_sal;
+end;
+/
+declare
+dno number:=&n;
+t number;
+begin 
+t:=tsal(dno);
+dbms_output.put_line('The Total salary of department with deptno '||dno||' is '||t);
+end;
+/
+output:
+Enter value for n: 10
+old   2: dno number:=&n;
+new   2: dno number:=10;
+The Total salary of department with deptno 10 is 8750
+********************************************************************************************************************************************************************
+3.Write a PL/SQL block that computes increment of an employee in employee table by using incr function which takes employee number as argument, calculates increment and returns the same based on the following criteria:
+  If salary <= 3000 – increment = 30% of salary
+	If salary > 3000 and <= 6000– increment = 20% of salary
+	Else increment = 10% of salary. 
+
+create or replace function incc1(n number) return number as
+no number:=n;
+incr_sal number;
+begin
+select sal into incr_sal from emp where empno=no;
+if(incr_sal<=3000) then
+incr_sal :=0.3*incr_sal;
+elsif (incr_sal>3000 and incr_sal<=6000) then
+incr_sal :=0.2*incr_sal;
+else
+incr_sal :=0.1*incr_sal;
+end if;
+return incr_sal;
+end;
+/
+
+
+declare
+n number:=&n;
+incr_sal number;
+s number;
+total number;
+begin
+incr_sal := incc1(n);
+select sal into s from emp where empno=n;
+total  := s+incr_sal;
+dbms_output.put_line('The incremented salary of employee with employee no '||n||' is ' ||total);
+end;
+/
+
+Enter value for n: 7876
+old   2: n number:=&n;
+new   2: n number:=7876;
+The incremented salary of employee with employee no 7876 is 1430
+
+PL/SQL procedure successfully completed.
+********************************************************************************************************************************************************************
+4.Write a stored procedure that displays the employee names and their total earnings from the Emp Table. Hint: Total earning of an employee = 12*(gross_salary+commission)
+create or replace procedure tot_ear as
+cursor emp_tab is
+select ename,sal,comm from emp;
+name varchar(20);
+s number;
+total number;
+com number;
+begin
+open emp_tab;
+loop
+fetch  emp_tab into name,s,com;
+exit when emp_tab%notfound;
+total := 12*(s+nvl(com,0));
+dbms_output.put_line('The Total earnings of '||name||' is '||total);
+end loop;
+end;
+/
+SQL>@C:\Users\y20cs19\Desktop\4.sql;
+Procedure created.
+
+SQL> exec tot_ear;
+The Total earnings of KING is 60000
+The Total earnings of BLAKE is 34200
+The Total earnings of CLARK is 29400
+The Total earnings of JONES is 35700
+The Total earnings of MARTIN is 31800
+The Total earnings of ALLEN is 22800
+The Total earnings of TURNER is 18000
+The Total earnings of JAMES is 11400
+The Total earnings of WARD is 21000
+The Total earnings of FORD is 36000
+The Total earnings of SMITH is 9600
+The Total earnings of SCOTT is 38400
+The Total earnings of ADAMS is 13200
+The Total earnings of MILLER is 15600
+
+PL/SQL procedure successfully completed.
