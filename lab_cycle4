@@ -149,6 +149,30 @@ The Total earnings of MILLER is 15600
 
 PL/SQL procedure successfully completed.
 ********************************************************************************************************************************************************************
+5.Create a database trigger that checks whether the new salary of employee is less than existing salary. If so, raise an appropriate exception and avoid that updation.
+
+create or replace trigger five
+before update on emp
+for each row
+begin
+if(:old.sal >:new.sal) then
+raise_application_error(-20000,'Salary cannot be updated');
+end if;
+end;
+/
+output:
+SQL>  update emp set sal=800 where empno=7876;
+ update emp set sal=800 where empno=7876
+        *
+ERROR at line 1:
+ORA-20000: Salary cannot be updated
+ORA-06512: at "SCOTT.FIVE", line 3
+ORA-04088: error during execution of trigger 'SCOTT.FIVE'
+
+SQL> update emp set sal=8000 where empno=7876;
+
+1 row updated.
+********************************************************************************************************************************************************************
 6.Consider the following tables
 PERSINFO
 EMPNO	NAME	AGE
