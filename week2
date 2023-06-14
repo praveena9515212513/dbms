@@ -338,3 +338,13 @@ TO modify certain column to unique constraint type
   2  /
 
 Table altered.
+
+
+to change the default type 
+SQL> alter table practice modify column2 default 'hai';
+
+Table altered.
+
+SQL> alter table practice modify column2 not null;
+
+Table altered.
