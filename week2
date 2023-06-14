@@ -329,3 +329,12 @@ COLUMN1                                   NOT NULL VARCHAR2(10)
 COLUMN2                                            VARCHAR2(20)
 COLUMN3                                            VARCHAR2(30)
 COLUMN5                                            NUMBER(2,3)
+
+
+
+TO modify certain column to unique constraint type
+
+  1* alter table practice add unique(column3)
+  2  /
+
+Table altered.
