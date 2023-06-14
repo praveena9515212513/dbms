@@ -1,0 +1,88 @@
+drop not null constraint
+ 1* alter table practice modify column3 varchar(30) null
+QL> /
+
+Table altered.
+
+QL> desc practice;
+Name                                      Null?    Type
+----------------------------------------- -------- ----------------------------
+COLUMN1                                   NOT NULL VARCHAR2(10)
+COLUMN2                                            VARCHAR2(20)
+COLUMN3                                            VARCHAR2(30)
+COLUMN5                                            NUMBER(2,3)
+
+****************************************************************************
+
+TO modify certain column to unique constraint type
+
+  1* alter table practice add unique(column3)
+  2  /
+
+Table altered.
+
+
+
+
+to change the default type 
+SQL> alter table practice modify column2 default 'hai';
+
+Table altered.
+
+SQL> alter table practice modify column2 not null;
+
+Table altered.
+****************************************************************************
+SQL> create table prac(
+  2  notnull varchar(10),
+  3  unq varchar(20),
+  4  chk varchar(10),
+  5  defa varchar(10));
+
+Table created.
+
+SQL> alter table prac drop column notnull;
+
+Table altered.
+
+SQL> alter table prac add notnull varchar(10);
+
+Table altered.
+
+SQL> alter table prac modify notnull unique;
+
+Table altered.
+
+SQL> alter table prac modify notnull not null;
+
+Table altered.
+
+SQL> alter table prac drop column unq;
+
+Table altered.
+
+SQL> alter table prac add unq varchar(10) unique;
+
+Table altered.
+
+SQL> alter table prac modify unq default 'hai';
+
+Table altered.
+
+SQL> alter table prac modify chk check (chk='hai');
+
+Table altered.
+
+  1* alter table prac drop column unq
+SQL> /
+
+Table altered.
+
+SQL> alter table prac add unq varchar(10) unique not null ;
+
+Table altered.
+
+  1* alter table prac add unq varchar(20) unique not null check (unq like '%a-')
+SQL> /
+
+Table altered.
