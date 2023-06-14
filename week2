@@ -314,3 +314,18 @@ Table altered.
 SQL> alter table demo modify no not null;
 
 Table altered.
+
+****************************************************************************8
+drop not null constraint
+ 1* alter table practice modify column3 varchar(30) null
+QL> /
+
+Table altered.
+
+QL> desc practice;
+Name                                      Null?    Type
+----------------------------------------- -------- ----------------------------
+COLUMN1                                   NOT NULL VARCHAR2(10)
+COLUMN2                                            VARCHAR2(20)
+COLUMN3                                            VARCHAR2(30)
+COLUMN5                                            NUMBER(2,3)
