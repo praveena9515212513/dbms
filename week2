@@ -315,36 +315,4 @@ SQL> alter table demo modify no not null;
 
 Table altered.
 
-****************************************************************************8
-drop not null constraint
- 1* alter table practice modify column3 varchar(30) null
-QL> /
-
-Table altered.
-
-QL> desc practice;
-Name                                      Null?    Type
------------------------------------------ -------- ----------------------------
-COLUMN1                                   NOT NULL VARCHAR2(10)
-COLUMN2                                            VARCHAR2(20)
-COLUMN3                                            VARCHAR2(30)
-COLUMN5                                            NUMBER(2,3)
-
-
-
-TO modify certain column to unique constraint type
-
-  1* alter table practice add unique(column3)
-  2  /
-
-Table altered.
-
-
-to change the default type 
-SQL> alter table practice modify column2 default 'hai';
-
-Table altered.
-
-SQL> alter table practice modify column2 not null;
-
-Table altered.
+****************************************************************************
